@@ -5,7 +5,9 @@
 
 # change 'tests => 1' to 'tests => last_test_to_print';
 
-use Test::More tests => 1;
+#use Test::More tests => last_test_to_print;
+use lib '../';
+use Test::More qw(no_plan);
 BEGIN { use_ok('Net::Wigle') };
 
 #########################

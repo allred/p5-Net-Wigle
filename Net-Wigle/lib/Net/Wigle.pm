@@ -1,5 +1,6 @@
 package Net::Wigle;
 
+use LWP::UserAgent;
 use 5.010000;
 use strict;
 use warnings;
