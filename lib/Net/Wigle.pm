@@ -1,13 +1,17 @@
 package Net::Wigle;
 
 use LWP::UserAgent;
+use Params::Validate qw(:all);
 use 5.010000;
 use strict;
 use warnings;
 
 require Exporter;
 
-our @ISA = qw(Exporter);
+our @ISA = qw(
+  Exporter
+  LWP::UserAgent
+);
 
 # Items to export into callers namespace by default. Note: do not export
 # names by default without a very good reason. Use EXPORT_OK instead.
@@ -27,51 +31,80 @@ our @EXPORT = qw(
 );
 
 our $VERSION = '0.01';
+our $url_query_base = 'http://www.wigle.net/gps/gps/GPSDB/confirmquery';
 
+sub new {
+  my $proto = shift;
+  my $class = ref $proto || $proto;
+  my $self = {};
+  bless $self, $class;
+  return $self;
+}
 
-# Preloaded methods go here.
+# purpose  : returns a parsed/scraped version of query_raw
+
+sub query {
+  my $self = shift;
+  my %args = @_;
+  my $response = $self->query_raw(%args); 
+}
+
+# purpose  : query wigle, trying to keep this simple
+# usage    : args are optional, just provided for informational purposes
+# comments : returns an HTTP::Response
+
+sub query_raw {
+  my $self = shift;
+  my %args = @_;
+  #my %args = validate @_, {
+  #  latrange1 => 0,
+  #  latrange2 => 0,
+  #  longrange1 => 0,
+  #  longrange2 => 0,
+  #  addresscode => 0,
+  #  statecode => 0,
+  #  zipcode => 0,
+  #  variance => 0,
+  #  pagestart => 0,
+  #  lastupdt => 0,
+  #  netid => 0,
+  #  ssid => 0,
+  #  freenet => 0,
+  #  paynet => 0,
+  #  dhcp => 0,
+  #  onlymine => 0,
+  #}; 
+  #my $string_query = '?' . join '&', map { "$_=$args{$_}" } keys %args;
+  return $self->post($url_query_base, %args);
+}
 
 1;
 __END__
-# Below is stub documentation for your module. You'd better edit it!
 
-=head1 NAME
+=head1 NAME 
 
-Net::Wigle - Perl extension for blah blah blah
+Net::Wigle - Perl extension for querying wigle.net 
 
 =head1 SYNOPSIS
 
   use Net::Wigle;
-  blah blah blah
+  my $wigle = Net::Wigle->new; 
 
 =head1 DESCRIPTION
 
-Stub documentation for Net::Wigle, created by h2xs. It looks like the
-author of the extension was negligent enough to leave the stub
-unedited.
-
-Blah blah blah.
+For your health.
 
 =head2 EXPORT
 
 None by default.
 
-
-
 =head1 SEE ALSO
 
-Mention other useful documentation such as the documentation of
-related modules or operating system documentation (such as man pages
-in UNIX), or any relevant external documentation such as RFCs or
-standards.
-
-If you have a mailing list set up for your module, mention it here.
-
-If you have a web site set up for your module, mention it here.
+Forums at http://wigle.net
 
 =head1 AUTHOR
 
-Mike Allred, E<lt>mallred@E<gt>
+Mike Allred, E<lt>mikejallred@gmail.comE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
