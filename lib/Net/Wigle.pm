@@ -151,13 +151,49 @@ sub query {
   }xmsgi) {
     my $row_raw = $1;
     $row_raw =~ m{
-      \<td\>(.*?)\</td\>\s*
-      \<td\>(.*?)\</td\>\s*
-      \<td\>(.*?)\</td\>\s*
+      \<td\>(.*?)\</td\>\s* # map link
+      \<td\>(.*?)\</td\>\s* # netid
+      \<td\>(.*?)\</td\>\s* # ssid
+      \<td\>(.*?)\</td\>\s* # comment
+      \<td\>(.*?)\</td\>\s* # name 
+      \<td\>(.*?)\</td\>\s* # type 
+      \<td\>(.*?)\</td\>\s* # freenet 
+      \<td\>(.*?)\</td\>\s* # paynet 
+      \<td\>(.*?)\</td\>\s* # firsttime 
+      \<td\>(.*?)\</td\>\s* # lasttime 
+      \<td\>(.*?)\</td\>\s* # flags 
+      \<td\>(.*?)\</td\>\s* # wep 
+      \<td\>(.*?)\</td\>\s* # trilat 
+      \<td\>(.*?)\</td\>\s* # trilong 
+      \<td\>(.*?)\</td\>\s* # dhcp 
+      \<td\>(.*?)\</td\>\s* # lastupdt 
+      \<td\>(.*?)\</td\>\s* # channel 
+      \<td\>(.*?)\</td\>\s* # active 
+      \<td\>(.*?)\</td\>\s* # bcninterval 
+      \<td\>(.*?)\</td\>\s* # qos 
+      \<td\>(.*?)\</td\>\s* # userfound 
     }xmsgi;
     push @records, {
       netid => $2,
       ssid => $3,
+      comment => $4,
+      name => $5,
+      type => $6,
+      freenet => $7,
+      paynet => $8,
+      firsttime => $9,
+      lasttime => $10,
+      flags => $11,
+      wep => $12,
+      trilat => $13,
+      trilong => $14,
+      dhcp => $15,
+      lastupdt => $16,
+      channel => $17,
+      active => $18,
+      bcninterval => $19,
+      qos => $20,
+      userfound => $21,
     };
   }
   return \@records;
@@ -198,6 +234,12 @@ It queries wigle.net.
 =head1 TODO 
 
 =over 1
+
+=item *urlencode params before http post.
+
+=item *entitydecode data returned in table.
+
+=item *translate '?' to undef?
 
 =item *Figure out if variance is always required.
 
