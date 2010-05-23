@@ -80,7 +80,7 @@ sub query {
     },
     variance => {
       default => '0.010',
-      optional => 1,
+      #optional => 1,
     },
     latrange1 => {
       optional => 1,
@@ -127,6 +127,9 @@ sub query {
     onlymine => {
 		  optional => 1,
     },
+    Query => {
+      default => 'Query',
+    },
   };
   my $cookie_jar = $self->log_in(
     user => $args{user},
@@ -135,7 +138,9 @@ sub query {
   unless ($cookie_jar) {
     return undef;
   }
-  my $response = $self->query_raw(%{$args{form}}); 
+  delete $args{user};
+  delete $args{pass};
+  my $response = $self->query_raw(%args); 
   unless ($response->is_success) {
     return undef;
   }
@@ -150,7 +155,8 @@ sub query_raw {
   my $self = shift;
   my %args = @_;
   #my $string_query = '?' . join '&', map { "$_=$args{$_}" } keys %args;
-  return $self->post($url_query_base, %args);
+  #die Dumper $string_query;
+  return $self->post($url_query_base, \%args);
 }
 
 1;
@@ -165,7 +171,7 @@ Net::Wigle - Perl extension for querying wigle.net
   use Net::Wigle;
   use Data::Dumper;
   my $wigle = Net::Wigle->new; 
-  print $wigle->query(
+  print Dumper $wigle->query(
     user => 'insertYourWigleUserNameHere',
     pass => 'insertYourWiglePasswordHere',
     ssid => 'insertAnSsidHere',
@@ -173,7 +179,7 @@ Net::Wigle - Perl extension for querying wigle.net
 
 =head1 DESCRIPTION
 
-"For your health." --Steve Brule
+"For your health." -Steve Brule
 
 =head2 EXPORT
 
