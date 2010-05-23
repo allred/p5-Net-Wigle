@@ -1,5 +1,6 @@
 package Net::Wigle;
 
+use Data::Dumper;
 use LWP::UserAgent;
 use Params::Validate qw(:all);
 use 5.010000;
@@ -21,17 +22,15 @@ our @ISA = qw(
 # If you do not need this, moving things directly into @EXPORT or @EXPORT_OK
 # will save memory.
 our %EXPORT_TAGS = ( 'all' => [ qw(
-	
 ) ] );
 
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 
 our @EXPORT = qw(
-	
 );
 
 our $VERSION = '0.01';
-our $url_query_base = 'http://www.wigle.net/gps/gps/GPSDB/confirmquery';
+our $url_query_base = 'http://www.wigle.net/gps/gps/main/confirmquery/';
 
 sub new {
   my $proto = shift;
@@ -41,12 +40,106 @@ sub new {
   return $self;
 }
 
+# purpose  : login to wigle.net
+
+sub log_in {
+  my $self = shift;
+  my %args = validate @_, {
+    user => { type => SCALAR, },
+    pass => { type => SCALAR, },
+  };
+  my $url_login = "http://wigle.net/gps/gps/main/login";
+  unless ($self->cookie_jar) {
+    $self->cookie_jar({});
+  }
+  my $form = {
+    credential_0 => $args{user},
+    credential_1 => $args{pass},
+    noexpire => 'checked',
+  };
+  my $response = $self->post($url_login, $form);
+  unless ($response->is_success) {
+    return undef;
+  }
+  return $self->cookie_jar;
+}
+
 # purpose  : returns a parsed/scraped version of query_raw
 
 sub query {
   my $self = shift;
-  my %args = @_;
-  my $response = $self->query_raw(%args); 
+  #my %args = validate @_, {
+  #}; 
+
+  my %args = validate @_, {
+    user => {
+      type => SCALAR,
+    },
+    pass => {
+      type => SCALAR,
+    },
+    variance => {
+      default => '0.010',
+      optional => 1,
+    },
+    latrange1 => {
+      optional => 1,
+    },
+    latrange2 => {
+      optional => 1,
+    },
+    longrange1 => {
+      optional => 1,
+    },
+    longrange2 => {
+      optional => 1,
+    },
+    addresscode => {
+      optional => 1,
+    },
+    statecode => {
+      optional => 1,
+    },
+    zipcode => {
+      optional => 1,
+    },
+    pagestart => {
+      optional => 1,
+    },
+    lastupdt => {
+      optional => 1,
+    },
+    netid => {
+      optional => 1,
+    },
+    ssid => {
+      optional => 1,
+    },
+    freenet => {
+      optional => 1,
+    },
+    paynet => {
+		  optional => 1,
+    },
+    dhcp => {
+		  optional => 1,
+    },
+    onlymine => {
+		  optional => 1,
+    },
+  };
+  my $cookie_jar = $self->log_in(
+    user => $args{user},
+    pass => $args{pass},
+  ); 
+  unless ($cookie_jar) {
+    return undef;
+  }
+  my $response = $self->query_raw(%{$args{form}}); 
+  unless ($response->is_success) {
+    return undef;
+  }
+  return $response->as_string;
 }
 
 # purpose  : query wigle, trying to keep this simple
@@ -56,24 +149,6 @@ sub query {
 sub query_raw {
   my $self = shift;
   my %args = @_;
-  #my %args = validate @_, {
-  #  latrange1 => 0,
-  #  latrange2 => 0,
-  #  longrange1 => 0,
-  #  longrange2 => 0,
-  #  addresscode => 0,
-  #  statecode => 0,
-  #  zipcode => 0,
-  #  variance => 0,
-  #  pagestart => 0,
-  #  lastupdt => 0,
-  #  netid => 0,
-  #  ssid => 0,
-  #  freenet => 0,
-  #  paynet => 0,
-  #  dhcp => 0,
-  #  onlymine => 0,
-  #}; 
   #my $string_query = '?' . join '&', map { "$_=$args{$_}" } keys %args;
   return $self->post($url_query_base, %args);
 }
@@ -88,11 +163,17 @@ Net::Wigle - Perl extension for querying wigle.net
 =head1 SYNOPSIS
 
   use Net::Wigle;
+  use Data::Dumper;
   my $wigle = Net::Wigle->new; 
+  print $wigle->query(
+    user => 'insertYourWigleUserNameHere',
+    pass => 'insertYourWiglePasswordHere',
+    ssid => 'insertAnSsidHere',
+  );
 
 =head1 DESCRIPTION
 
-For your health.
+"For your health." --Steve Brule
 
 =head2 EXPORT
 
