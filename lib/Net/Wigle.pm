@@ -1,3 +1,4 @@
+# see POD at the bottom for documentation
 package Net::Wigle;
 
 use Data::Dumper;
@@ -31,6 +32,7 @@ our @EXPORT = qw(
 
 our $VERSION = '0.01';
 our $url_query_base = 'http://www.wigle.net/gps/gps/main/confirmquery/';
+our $url_login = 'http://wigle.net/gps/gps/main/login';
 
 sub new {
   my $proto = shift;
@@ -48,7 +50,6 @@ sub log_in {
     user => { type => SCALAR, },
     pass => { type => SCALAR, },
   };
-  my $url_login = "http://wigle.net/gps/gps/main/login";
   unless ($self->cookie_jar) {
     $self->cookie_jar({});
   }
@@ -68,9 +69,6 @@ sub log_in {
 
 sub query {
   my $self = shift;
-  #my %args = validate @_, {
-  #}; 
-
   my %args = validate @_, {
     user => {
       type => SCALAR,
@@ -80,7 +78,6 @@ sub query {
     },
     variance => {
       default => '0.010',
-      #optional => 1,
     },
     latrange1 => {
       optional => 1,
@@ -144,18 +141,35 @@ sub query {
   unless ($response->is_success) {
     return undef;
   }
-  return $response->as_string;
+  my $string_search_response = $response->as_string;
+  my @records;
+  #$string_search_response =~ qr/.*\<tr\s+class="search"\s*\>(.*?)\<\/tr.*/xmsi;
+  while ($string_search_response =~ m{
+    \<tr\s+class="search"\s*\>
+      (.*?)
+    \</tr
+  }xmsgi) {
+    my $row_raw = $1;
+    $row_raw =~ m{
+      \<td\>(.*?)\</td\>\s*
+      \<td\>(.*?)\</td\>\s*
+      \<td\>(.*?)\</td\>\s*
+    }xmsgi;
+    push @records, {
+      netid => $2,
+      ssid => $3,
+    };
+  }
+  return \@records;
 }
 
 # purpose  : query wigle, trying to keep this simple
 # usage    : args are optional, just provided for informational purposes
-# comments : returns an HTTP::Response
+# comments : returns an HTTP::Response object
 
 sub query_raw {
   my $self = shift;
   my %args = @_;
-  #my $string_query = '?' . join '&', map { "$_=$args{$_}" } keys %args;
-  #die Dumper $string_query;
   return $self->post($url_query_base, \%args);
 }
 
@@ -179,15 +193,25 @@ Net::Wigle - Perl extension for querying wigle.net
 
 =head1 DESCRIPTION
 
-"For your health." -Steve Brule
+It queries wigle.net.
 
-=head2 EXPORT
+=head1 TODO 
 
-None by default.
+=over 1
+
+=item *Figure out if variance is always required.
+
+=item *Test on many platforms.
+
+=back
 
 =head1 SEE ALSO
 
 Forums at http://wigle.net
+
+=head1 MOTD 
+
+"For your health." -Steve Brule
 
 =head1 AUTHOR
 
