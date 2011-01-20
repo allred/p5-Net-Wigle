@@ -5,7 +5,9 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
     NAME              => 'Net::Wigle',
     VERSION_FROM      => 'lib/Net/Wigle.pm', # finds $VERSION
-    PREREQ_PM         => {}, # e.g., Module::Name => 1.1
+    PREREQ_PM         => {
+      'LWP::UserAgent' => 0,
+    },
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
       (ABSTRACT_FROM  => 'lib/Net/Wigle.pm', # retrieve abstract from module
        AUTHOR         => 'Mike Allred <mikejallred@gmail.com>') : ()),

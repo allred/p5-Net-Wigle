@@ -30,7 +30,7 @@ our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 our @EXPORT = qw(
 );
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 our $url_query_base = 'http://www.wigle.net/gps/gps/main/confirmquery/';
 our $url_login = 'http://wigle.net/gps/gps/main/login';
 
@@ -235,15 +235,15 @@ It queries wigle.net.
 
 =over 1
 
-=item *urlencode params before http post.
+=item urlencode params before http post.
 
-=item *entitydecode data returned in table.
+=item entitydecode data returned in table.
 
-=item *translate '?' to undef?
+=item translate '?' to undef?
 
-=item *Figure out if variance is always required.
+=item Figure out if variance is always required.
 
-=item *Test on many platforms.
+=item Test on many platforms.
 
 =back
 
