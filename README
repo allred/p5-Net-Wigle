@@ -1,7 +1,7 @@
-Net-Wigle version 0.01
+Net-Wigle version 0.02
 ======================
 
-Started as something to do at Techcrunch Disrupt Hackathon on 2010-05-22.
+A query tool for wigle.net.  Started as something to do at Techcrunch Disrupt Hackathon on 2010-05-22.
 
 INSTALLATION
 
@@ -14,11 +14,9 @@ To install this module type the following:
 
 DEPENDENCIES
 
-This module requires these other modules and libraries:
+LWP::UserAgent
 
 COPYRIGHT AND LICENCE
-
-Put the correct copyright and licence information here.
 
 Copyright (C) 2011 by Mike Allred
 
