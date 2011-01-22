@@ -7,6 +7,7 @@ WriteMakefile(
     VERSION_FROM      => 'lib/Net/Wigle.pm', # finds $VERSION
     PREREQ_PM         => {
       'LWP::UserAgent' => 0,
+      'Params::Validate' => 0,
     },
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
       (ABSTRACT_FROM  => 'lib/Net/Wigle.pm', # retrieve abstract from module
