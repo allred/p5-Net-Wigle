@@ -15,6 +15,12 @@ To install this module type the following:
 DEPENDENCIES
 
 LWP::UserAgent
+Params::Validate
+
+DEVELOPER HOWTO
+
+   perl Makefile.PL
+   make dist
 
 COPYRIGHT AND LICENCE
 
