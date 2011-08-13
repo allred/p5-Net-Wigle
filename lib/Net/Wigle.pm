@@ -30,7 +30,7 @@ our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 our @EXPORT = qw(
 );
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 our $url_query_base = 'http://www.wigle.net/gps/gps/main/confirmquery/';
 our $url_login = 'http://wigle.net/gps/gps/main/login';
 
@@ -151,27 +151,26 @@ sub query {
   }xmsgi) {
     my $row_raw = $1;
     $row_raw =~ m{
-      \<td\>(.*?)\</td\>\s* # map link
-      \<td\>(.*?)\</td\>\s* # netid
-      \<td\>(.*?)\</td\>\s* # ssid
-      \<td\>(.*?)\</td\>\s* # comment
-      \<td\>(.*?)\</td\>\s* # name 
-      \<td\>(.*?)\</td\>\s* # type 
-      \<td\>(.*?)\</td\>\s* # freenet 
-      \<td\>(.*?)\</td\>\s* # paynet 
-      \<td\>(.*?)\</td\>\s* # firsttime 
-      \<td\>(.*?)\</td\>\s* # lasttime 
-      \<td\>(.*?)\</td\>\s* # flags 
-      \<td\>(.*?)\</td\>\s* # wep 
-      \<td\>(.*?)\</td\>\s* # trilat 
-      \<td\>(.*?)\</td\>\s* # trilong 
-      \<td\>(.*?)\</td\>\s* # dhcp 
-      \<td\>(.*?)\</td\>\s* # lastupdt 
-      \<td\>(.*?)\</td\>\s* # channel 
-      \<td\>(.*?)\</td\>\s* # active 
-      \<td\>(.*?)\</td\>\s* # bcninterval 
-      \<td\>(.*?)\</td\>\s* # qos 
-      \<td\>(.*?)\</td\>\s* # userfound 
+      <td>(.*?)</td>\s* # map link
+      <td>(.*?)</td>\s* # netid
+      <td>(.*?)</td>\s* # ssid
+      <td>(.*?)</td>\s* # comment
+      <td>(.*?)</td>\s* # name 
+      <td>(.*?)</td>\s* # type 
+      <td>(.*?)</td>\s* # freenet 
+      <td>(.*?)</td>\s* # paynet 
+      <td>(.*?)</td>\s* # firsttime 
+      <td>(.*?)</td>\s* # lasttime 
+      <td>(.*?)</td>\s* # flags 
+      <td>(.*?)</td>\s* # wep 
+      <td>(.*?)</td>\s* # trilat 
+      <td>(.*?)</td>\s* # trilong 
+      <td>(.*?)</td>\s* # dhcp 
+      <td>(.*?)</td>\s* # lastupdt 
+      <td>(.*?)</td>\s* # channel 
+      <td>(.*?)</td>\s* # active 
+      <td>(.*?)</td>\s* # bcninterval 
+      <td>(.*?)</td>\s* # qos 
     }xmsgi;
     push @records, {
       netid => $2,
