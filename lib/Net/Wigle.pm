@@ -30,7 +30,7 @@ our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 our @EXPORT = qw(
 );
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 our $url_query_base = 'http://www.wigle.net/gps/gps/main/confirmquery/';
 our $url_login = 'http://wigle.net/gps/gps/main/login';
 
@@ -228,7 +228,7 @@ Net::Wigle - Perl extension for querying wigle.net
 
 =head1 DESCRIPTION
 
-It queries wigle.net.
+It queries wigle.net.  See output from example code for a list of query params (ssid, netid, etc).
 
 =head1 TODO 
 
@@ -242,13 +242,14 @@ It queries wigle.net.
 
 =item Figure out if variance is always required.
 
-=item Test on many platforms.
 
 =back
 
 =head1 SEE ALSO
 
 Forums at http://wigle.net
+
+Code is at https://github.com/allred/p5-Net-Wigle
 
 =head1 MOTD 
 
