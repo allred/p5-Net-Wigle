@@ -30,7 +30,7 @@ our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 our @EXPORT = qw(
 );
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 our $url_query_base = 'https://wigle.net/gps/gps/main/confirmquery/';
 our $url_login = 'https://wigle.net/gps/gps/main/login/';
 
