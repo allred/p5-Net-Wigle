@@ -31,14 +31,15 @@ our @EXPORT = qw(
 );
 
 our $VERSION = '0.04';
-our $url_query_base = 'http://www.wigle.net/gps/gps/main/confirmquery/';
-our $url_login = 'http://wigle.net/gps/gps/main/login';
+our $url_query_base = 'https://wigle.net/gps/gps/main/confirmquery/';
+our $url_login = 'https://wigle.net/gps/gps/main/login/';
 
 sub new {
   my $proto = shift;
   my $class = ref $proto || $proto;
   my $self = {};
   bless $self, $class;
+  $self->requests_redirectable(['GET', 'HEAD', 'POST']);
   return $self;
 }
 
