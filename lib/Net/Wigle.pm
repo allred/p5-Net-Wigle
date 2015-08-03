@@ -1,12 +1,13 @@
 # see POD at the bottom for documentation
 package Net::Wigle;
 
+use strict;
+use warnings;
 use Data::Dumper;
+use JSON;
 use LWP::UserAgent;
 use Params::Validate qw(:all);
 use 5.010000;
-use strict;
-use warnings;
 
 require Exporter;
 
@@ -30,9 +31,9 @@ our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 our @EXPORT = qw(
 );
 
-our $VERSION = '0.05';
-our $url_query_base = 'https://wigle.net/gps/gps/main/confirmquery/';
-our $url_login = 'https://wigle.net/gps/gps/main/login/';
+our $VERSION = '0.06';
+our $url_query_base = 'https://wigle.net/api/v1/jsonSearch';
+our $url_login = 'https://wigle.net/api/v1/jsonUser';
 
 sub new {
   my $proto = shift;
@@ -57,6 +58,7 @@ sub log_in {
   my $form = {
     credential_0 => $args{user},
     credential_1 => $args{pass},
+    destination => '/https://wigle.net',
     noexpire => 'checked',
   };
   my $response = $self->post($url_login, $form);
@@ -66,7 +68,8 @@ sub log_in {
   return $self->cookie_jar;
 }
 
-# purpose  : returns a parsed/scraped version of query_raw
+# purpose : used to return a parsed/scraped html table
+#           now it just returns the parsed json
 
 sub query {
   my $self = shift;
@@ -142,6 +145,7 @@ sub query {
   unless ($response->is_success) {
     return undef;
   }
+  return from_json($response->decoded_content);
   my $string_search_response = $response->as_string;
   my @records;
   #$string_search_response =~ qr/.*\<tr\s+class="search"\s*\>(.*?)\<\/tr.*/xmsi;
@@ -236,8 +240,6 @@ It queries wigle.net.  See output from example code for a list of query params (
 =over 1
 
 =item urlencode params before http post.
-
-=item entitydecode data returned in table.
 
 =item translate '?' to undef?
 
