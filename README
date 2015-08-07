@@ -19,6 +19,7 @@ To install this module type the following:
 
 DEPENDENCIES
 
+JSON
 LWP::UserAgent
 Params::Validate
 

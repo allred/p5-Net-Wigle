@@ -6,6 +6,7 @@ WriteMakefile(
     NAME              => 'Net::Wigle',
     VERSION_FROM      => 'lib/Net/Wigle.pm', # finds $VERSION
     PREREQ_PM         => {
+      'JSON' => 0,
       'LWP::UserAgent' => 0,
       'Params::Validate' => 0,
     },

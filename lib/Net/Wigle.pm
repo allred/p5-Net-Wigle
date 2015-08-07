@@ -31,7 +31,7 @@ our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 our @EXPORT = qw(
 );
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 our $url_query_base = 'https://wigle.net/api/v1/jsonSearch';
 our $url_login = 'https://wigle.net/api/v1/jsonUser';
 
